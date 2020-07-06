@@ -1,0 +1,27 @@
+language: java
+dist: xenial
+sudo: false
+jdk:
+  - oraclejdk11
+  - openjdk8
+  - openjdk9
+  - openjdk10
+  - openjdk11
+  - openjdk12
+  - openjdk13
+
+jobs:
+  include:
+    - jdk: oraclejdk8
+      dist: trusty # oraclejdk8 install fails on Xenial
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+before_script:
+  - chmod +x gradlew
