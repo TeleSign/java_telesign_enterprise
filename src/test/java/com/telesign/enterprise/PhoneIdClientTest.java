@@ -35,6 +35,25 @@ public class PhoneIdClientTest extends TestCase {
         this.mockServer.shutdown();
     }
 
+    public void testPhoneIdConstructorDefault() {
+        PhoneIdClient client = new PhoneIdClient(customerId, apiKey);
+        assertNotNull(client);
+    }
+    public void testPhoneIdConstructorFull() {
+        PhoneIdClient client = new PhoneIdClient(
+                customerId,
+                apiKey,
+                "restEndpoint",
+                0,
+                0,
+                0,
+                null,
+                "",
+                ""
+        );
+        assertNotNull(client);
+    }
+
     public void testPhoneIdWithParamsAndAddons() throws Exception {
 
         HashMap<String, Object> params = new HashMap<String, Object>() {{
@@ -87,6 +106,91 @@ public class PhoneIdClientTest extends TestCase {
         assertEquals("body is not as expected", "{}",
                 request.getBody().readUtf8());
         assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testLegacyScore() throws Exception {
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.score("18005555555", "UCID", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected",
+                "/v1/phoneid/score/18005555555?ucid=UCID", request.getPath());
+        assertEquals("body is not as expected", "",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testLegacyContact() throws Exception {
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.contact("18005555555", "UCID", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected",
+                "/v1/phoneid/contact/18005555555?ucid=UCID", request.getPath());
+        assertEquals("body is not as expected", "",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+
+    public void testLegacyLive() throws Exception {
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.live("18005555555", "UCID", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected",
+                "/v1/phoneid/live/18005555555?ucid=UCID", request.getPath());
+        assertEquals("body is not as expected", "",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testLegacyNumberDeactivation() throws Exception {
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.numberDeactivation("18005555555", "UCID", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected",
+                "/v1/phoneid/number_deactivation/18005555555?ucid=UCID", request.getPath());
+        assertEquals("body is not as expected", "",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
                 request.getHeader("Content-Type"));
         assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
                 request.getHeader("x-ts-auth-method"));

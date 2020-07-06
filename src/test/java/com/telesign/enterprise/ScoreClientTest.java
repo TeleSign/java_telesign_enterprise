@@ -32,6 +32,26 @@ public class ScoreClientTest extends TestCase {
         this.mockServer.shutdown();
     }
 
+    public void testScoreConstructorDefault() throws Exception {
+        ScoreClient client = new ScoreClient(customerId, apiKey);
+        assertNotNull(client);
+    }
+
+    public void testScoreConstructorFull() throws Exception {
+        ScoreClient client = new ScoreClient(
+                customerId,
+                apiKey,
+                "restEndpoint",
+                0,
+                0,
+                0,
+                null,
+                "",
+                ""
+        );
+        assertNotNull(client);
+    }
+
     public void testScore() throws Exception {
 
         HashMap<String, String> params = new HashMap<String, String>();

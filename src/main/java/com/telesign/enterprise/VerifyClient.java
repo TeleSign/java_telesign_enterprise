@@ -2,6 +2,7 @@ package com.telesign.enterprise;
 
 import com.telesign.RestClient;
 
+import javax.xml.bind.annotation.XmlElementDecl;
 import java.io.IOException;
 import java.net.Proxy;
 import java.security.GeneralSecurityException;
