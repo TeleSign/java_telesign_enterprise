@@ -57,7 +57,7 @@ You should then see a message that indicates the build was successful.
 
    `cp -r ~/code/local/telesign_sdks/java_telesign_enterprise/src/main/java/com ./src/main/java/`
 
-7. Open the buid.gradle.kts file in your project and add `mavenCentral()` to the `repositories` block right below `jcenter()`.
+7. Open the build.gradle.kts file in your project and add `mavenCentral()` to the `repositories` block right below `jcenter()`.
 
 8. Add the following dependencies to the `dependencies` block:
 
