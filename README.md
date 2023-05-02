@@ -45,7 +45,7 @@ Follow these steps to add this SDK as a dependency to your project.
 5. Select the following options at each of the prompts that appear at the command line.
 
 * **Select type of project to generate:** `2: application`
-* **Select implementation language:*** `3: Java`
+* **Select implementation language:** `3: Java`
 * **Split functionality across multiple subprojects?:** `1: no - only one application project`
 * **Select build script DSL:** `2: Kotlin`
 * **Generate build using new APIs and behavior:** `yes` 
