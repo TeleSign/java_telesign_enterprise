@@ -44,25 +44,24 @@ Follow these steps to add this SDK as a dependency to your project.
 
 5. Select the following options at each of the prompts that appear at the command line.
 
-* *Select type of project to generate:* `2: application`
-* *Select implementation language:* `3: Java`
-* *Select build script DSL:* `2: Kotlin`
-* *Select test framework:* `1: JUnit 4`
-* *Project name (default: sms):* `sendSMS`
-* *Source package (default: sendSMS):* Hit Enter to use the default.
+* **Select type of project to generate:** `2: application`
+* **Select implementation language:*** `3: Java`
+* **Split functionality across multiple subprojects?:** `1: no - only one application project`
+* **Select build script DSL:** `2: Kotlin`
+* **Generate build using new APIs and behavior:** `yes` 
+* **Select test framework:** {your preferred test framework}
+* **Project name (default: {default project name}):** {your project name}
+* **Source package (default: {default source package name}):** {your source package name}
 
 You should then see a message that indicates the build was successful.
 
-6. Copy all the .java source files from the Telesign Full-service Java SDK into your project:
+6. Enter the top-level directory of your project and copy all the .java source files from the Telesign Full-service Java SDK into your project:
 
-   `cp -r ~/code/local/telesign_sdks/java_telesign_enterprise/src/main/java/com ./src/main/java/`
+   `cp -r ~/code/local/telesign_sdks/java_telesign_enterprise/src/main/java/com app/src/main/java/`
 
-7. Open the build.gradle.kts file in your project and add `mavenCentral()` to the `repositories` block right below `jcenter()`.
-
-8. Add the following dependencies to the `dependencies` block:
+7. Add the following dependencies to the `dependencies` block in the file "app/build.gradle.kts" in your project:
 
    ```
-   implementation("com.google.guava:guava:29.0-jre")
    implementation("com.google.code.gson:gson:2.2.+")
    implementation ("com.squareup.okio:okio:2.9.0")
    implementation("com.telesign:telesign:2.3.0")
