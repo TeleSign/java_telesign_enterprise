@@ -16,33 +16,21 @@
 
 Follow these steps to add this SDK as a dependency to your project.
 
-1. Create a new directory to download the Telesign SDK. This should not be in the same directory as where you build your integration.
+1. Create a directory where you want to create your Telesign integration. Skip this step if you already have created a project. If you plan to create multiple Java projects that use Telesign, we recommend that you group them within a `telesign_integrations` directory.
 
 ```
-    cd ~/code/local
-    mkdir telesign_sdks
-    cd telesign_sdks
+   cd ~/code/local
+   mkdir telesign_integrations
+   cd telesign_integrations
+   mkdir {your project directory name}
+   cd {your project directory name}
 ```
 
-2. Clone this repo. A new directory should appear called `java_telesign_enterprise`:
-
-   `git clone https://github.com/TeleSign/java_telesign_enterprise.git`
-
-3. Create another directory (this must be outside of the SDK directory you just created) where you want to create your Telesign integration. Skip this step if you already have created a project. If you plan to create multiple Java projects that use Telesign, we recommend that you group them within a `telesign_integrations` directory.
-
-```
-    cd ~/code/local
-    mkdir telesign_integrations
-    cd telesign_integrations
-    mkdir {your project name}
-    cd {your project name}
-```
-
-4. Create a new Gradle project.
+2. Create a new Gradle project.
 
    `gradle init`
 
-5. Select the following options at each of the prompts that appear at the command line.
+3. Select the following options at each of the prompts that appear at the command line.
 
 * **Select type of project to generate:** `2: application`
 * **Select implementation language:** `3: Java`
@@ -55,19 +43,18 @@ Follow these steps to add this SDK as a dependency to your project.
 
 You should then see a message that indicates the build was successful.
 
-6. Enter the top-level directory of your project and copy all the .java source files from the Telesign Full-service Java SDK into your project:
-
-   `cp -r ~/code/local/telesign_sdks/java_telesign_enterprise/src/main/java/com app/src/main/java/`
-
-7. Add the following dependencies to the `dependencies` block in the file "app/build.gradle.kts" in your project:
+4. Add the following dependencies to the `dependencies` block in the file "app/build.gradle.kts" in your project:
 
    ```
    implementation("com.google.code.gson:gson:2.2.+")
    implementation ("com.squareup.okio:okio:2.9.0")
    implementation("com.telesign:telesign:2.3.0")
+   implementation("com.telesign:telesignenterprise:2.2.3")
    ```
 
-The last of these statements imports the Telesign Self-service SDK. This is needed because the Telesign Full-service SDK also uses some functionality in the Self-service SDK.
+That last dependency pulls in the Telesign Full-service Java SDK.
+
+The dependency before it imports the Telesign Self-service Java SDK. This is needed because the Telesign Full-service SDK also uses some functionality in the Self-service SDK.
 
 ## Authentication
 
