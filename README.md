@@ -48,13 +48,12 @@ You should then see a message that indicates the build was successful.
    ```
    implementation("com.google.code.gson:gson:2.2.+")
    implementation ("com.squareup.okio:okio:2.9.0")
-   implementation("com.telesign:telesign:2.3.0")
    implementation("com.telesign:telesignenterprise:2.2.3")
    ```
 
 That last dependency pulls in the Telesign Full-service Java SDK.
 
-The dependency before it imports the Telesign Self-service Java SDK. This is needed because the Telesign Full-service SDK also uses some functionality in the Self-service SDK.
+This will also install the Telesign Self-service Java SDK since it is a dependency for the Full-service SDK.
 
 ## Authentication
 
