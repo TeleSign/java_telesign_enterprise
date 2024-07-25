@@ -43,15 +43,13 @@ Follow these steps to add this SDK as a dependency to your project.
 
 You should then see a message that indicates the build was successful.
 
-4. Add the following dependencies to the `dependencies` block in the file "app/build.gradle.kts" in your project:
+4. Add the following dependency to the `dependencies` block in the file "app/build.gradle.kts" in your project:
 
    ```
-   implementation("com.google.code.gson:gson:2.2.+")
-   implementation ("com.squareup.okio:okio:2.9.0")
-   implementation("com.telesign:telesignenterprise:2.2.3")
+   implementation("com.telesign.enterprise:telesignenterprise:2.2.3")
    ```
 
-That last dependency pulls in the Telesign Full-service Java SDK.
+This pulls in the Telesign Full-service Java SDK.
 
 This will also install the Telesign Self-service Java SDK since it is a dependency for the Full-service SDK.
 
