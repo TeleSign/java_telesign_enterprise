@@ -48,7 +48,7 @@ uploadArchives {
             }
 
             pom.project {
-                name 'Telesign Enterprise SDK'
+                name 'Telesign Full-service SDK'
                 packaging 'jar'
                 description 'The Telesign Full-service Java SDK enhances the functionality of the Telesign Self-service Java SDK, providing access to a broader range of Telesign APIs. See our source code on GitHub (https://github.com/telesign/java_telesign_enterprise) for installation instructions and other details.'
                 url 'https://github.com/telesign/java_telesign_enterprise'
