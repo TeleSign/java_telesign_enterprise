@@ -17,3 +17,66 @@ dependencies {
 }
 
 apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
+            }
+
+            pom.project {
+                name 'Telesign Full-service SDK'
+                packaging 'jar'
+                description 'The Telesign Full-service Java SDK enhances the functionality of the Telesign Self-service Java SDK, providing access to a broader range of Telesign APIs. See our source code on GitHub (https://github.com/telesign/java_telesign_enterprise) for installation instructions and other details.'
+                url 'https://github.com/telesign/java_telesign_enterprise'
+
+                scm {
+                    connection 'scm:git:https://github.com/telesign/java_telesign_enterprise.git'
+                    developerConnection 'scm:git:git@github.com:telesign/java_telesign_enterprise.git'
+                    url 'https://github.com/telesign/java_telesign_enterprise'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                    license {
+                        name 'Apache Software License (ASL) version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name 'Telesign Corp.'
+                        organizationUrl 'https://www.telesign.com'
+                    }
+                }
+            }
+        }
+    }
+}
