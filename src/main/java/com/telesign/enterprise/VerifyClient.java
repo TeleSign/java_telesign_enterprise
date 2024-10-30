@@ -24,11 +24,11 @@ public class VerifyClient extends RestClient {
     private static final String VERIFY_COMPLETION_RESOURCE = "/v1/verify/completion/%s";
 
     private static final String BASE_URL_VERIFICATION_PROCESS = "https://verify.telesign.com";
-    private static final String BASE_URL_VERIFY_API = "https://rest-ww.telesign.com";
+    private static final String DEFAULT_FS_BASE_URL = "https://rest-ww.telesign.com";
     private static final String PATH_VERIFICATION = "/verification";
 
     public VerifyClient(String customerId, String apiKey) {
-        super(customerId, apiKey, BASE_URL_VERIFY_API);
+        super(customerId, apiKey, DEFAULT_FS_BASE_URL);
     }
 
     public VerifyClient(String customerId, String apiKey, String restEndpoint) {
@@ -60,7 +60,7 @@ public class VerifyClient extends RestClient {
         }
 
         params.put("phone_number", phoneNumber);
-        this.setRestEndpoint(BASE_URL_VERIFY_API);
+        this.setRestEndpoint(DEFAULT_FS_BASE_URL);
         return this.post(VERIFY_SMS_RESOURCE, params);
     }
 

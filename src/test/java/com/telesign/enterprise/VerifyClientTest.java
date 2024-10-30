@@ -21,8 +21,11 @@ public class VerifyClientTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        this.apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        this.customerId = System.getenv("CUSTOMER_ID");
+        this.apiKey = System.getenv("API_KEY");
+
+        if (this.customerId == null) this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
+        if (this.apiKey == null) this.apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
 
         this.mockServer = new MockWebServer();
         this.mockServer.start();
