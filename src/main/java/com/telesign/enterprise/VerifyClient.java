@@ -79,11 +79,13 @@ public class VerifyClient extends RestClient {
         infoRecipient.put("phone_number", phoneNumber);
         params.put("recipient", infoRecipient);
 
-        List<Object> infoVerificationPolicy = new ArrayList<>();
-        HashMap<String, String> infoMethod = new HashMap<>();
-        infoMethod.put("method", "sms");
-        infoVerificationPolicy.add(infoMethod);
-        params.put("verification_policy", infoVerificationPolicy);
+        if (!params.containsKey("verification_policy")) {
+            List<Object> infoVerificationPolicy = new ArrayList<>();
+            HashMap<String, String> infoMethod = new HashMap<>();
+            infoMethod.put("method", "sms");
+            infoVerificationPolicy.add(infoMethod);
+            params.put("verification_policy", infoVerificationPolicy);
+        }
 
         this.setRestEndpoint(BASE_URL_VERIFICATION_PROCESS);
         return this.post(PATH_VERIFICATION, params, "application/json", "Basic");
