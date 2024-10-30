@@ -87,6 +87,7 @@ public class MessagingClient extends com.telesign.RestClient {
         return this.get(String.format(MESSAGING_STATUS_RESOURCE, referenceId), params);
     }
 
+    @Override
     public RequestBody createRequestBody(Map<String, ? extends Object> params, String contentType) throws UnsupportedEncodingException, IOException {
         if (contentType.equals(JSON_CONTENT_TYPE)) {
             Gson gson = new Gson();
