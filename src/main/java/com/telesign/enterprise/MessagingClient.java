@@ -64,16 +64,7 @@ public class MessagingClient extends com.telesign.RestClient {
         return this.post(MESSAGING_RESOURCE, params);
     }
 
-    public TelesignResponse omnimessage(String phoneNumber, String message, String messageType, Map<String, String> params) throws IOException, GeneralSecurityException {
-
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        params.put("phone_number", phoneNumber);
-        params.put("message", message);
-        params.put("message_type", messageType);
-
+    public TelesignResponse omnimessage(Map<String, Object> params) throws IOException, GeneralSecurityException {
         return this.post(OMNI_MESSAGING_RESOURCE, params, JSON_CONTENT_TYPE);
     }
 
@@ -91,37 +82,9 @@ public class MessagingClient extends com.telesign.RestClient {
     public RequestBody createRequestBody(Map<String, ? extends Object> params, String contentType) throws UnsupportedEncodingException, IOException {
         if (contentType.equals(JSON_CONTENT_TYPE)) {
             Gson gson = new Gson();
-            JsonObject jsonObject = new JsonObject();
-            HashMap<String, Object> paramsCopy = new HashMap<>(params);
-
-            HashMap<String, Object> recipient = new HashMap<>();
-            recipient.put("phone_number", paramsCopy.remove("phone_number"));
-            jsonObject.add("recipient", gson.toJsonTree(recipient));
-
-            Map<String, Object> message = new HashMap<>();
-            Map<String, Object> sms = new HashMap<>();
-            Map<String, String> parameters = new HashMap<>();
-
-            parameters.put("text",paramsCopy.remove("message").toString());
-            sms.put("parameters",parameters);
-            message.put("sms", sms);
-            sms.put("template", "text");
-
-            jsonObject.add("message", gson.toJsonTree(message));
-
-            JsonObject paramsObject = gson.toJsonTree(paramsCopy, new TypeToken<HashMap<String, String>>() {
+            JsonObject jsonObject = gson.toJsonTree(params, new TypeToken<HashMap<String, String>>() {
             }.getType()).getAsJsonObject();
-            for (String key : paramsCopy.keySet()) {
-                jsonObject.add(key, paramsObject.get(key));
-            }
 
-            HashMap<String, Object> smsChannel = new HashMap<>();
-            smsChannel.put("channel", "sms");
-            smsChannel.put("fallback_time", 300);
-            List<HashMap<String, Object>> channels = new ArrayList<>();
-            channels.add(smsChannel);
-
-            jsonObject.add("channels", gson.toJsonTree(channels));
             String jsonString = jsonObject.toString();
             return !params.isEmpty() ? RequestBody.create(com.telesign.PhoneIdClient.JSON, jsonString.getBytes()) : RequestBody.create(com.telesign.PhoneIdClient.JSON, "");
         } else {
