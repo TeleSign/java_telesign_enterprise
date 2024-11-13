@@ -1,17 +1,9 @@
 package com.telesign.enterprise;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import okhttp3.RequestBody;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.Proxy;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MessagingClient extends com.telesign.RestClient {
@@ -48,7 +40,7 @@ public class MessagingClient extends com.telesign.RestClient {
      * @param messageType This parameter specifies the traffic type being sent in the message.
      * @param params Additional and optional params
      * <p>
-     * See https://developer.telesign.com/docs/messaging-api for detailed API documentation.
+     * See  https://developer.telesign.com/enterprise/reference/sendsms for detailed API documentation.
      * </p>
      */
     public TelesignResponse message(String phoneNumber, String message, String messageType, Map<String, String> params) throws IOException, GeneralSecurityException {
@@ -64,14 +56,21 @@ public class MessagingClient extends com.telesign.RestClient {
         return this.post(MESSAGING_RESOURCE, params);
     }
 
-    public TelesignResponse omnimessage(Map<String, Object> params) throws IOException, GeneralSecurityException {
+    /**
+     * Send a message to the target recipient using any of Telesign's supported channels.
+     * @param params All required and optional parameters well-structured according to the API documentation.
+     * <p>
+     * See  https://developer.telesign.com/enterprise/reference/sendadvancedmessage for detailed API documentation.
+     * </p>
+     */
+    public TelesignResponse omniMessage(Map<String, Object> params) throws IOException, GeneralSecurityException {
         return this.post(OMNI_MESSAGING_RESOURCE, params, JSON_CONTENT_TYPE);
     }
 
     /**
-     * Retrieves the current status of the message.
+     * Retrieves the current status of the message via exclusively message method.
      * <p>
-     * See https://developer.telesign.com/docs/messaging-api for detailed API documentation.
+     * See https://developer.telesign.com/enterprise/reference/getsmsstatus for detailed API documentation.
      */
     public TelesignResponse status(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
 
