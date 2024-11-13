@@ -5,7 +5,9 @@ import com.telesign.RestClient;
 import java.io.IOException;
 import java.net.Proxy;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,9 +23,12 @@ public class VerifyClient extends RestClient {
     private static final String VERIFY_STATUS_RESOURCE = "/v1/verify/%s";
     private static final String VERIFY_COMPLETION_RESOURCE = "/v1/verify/completion/%s";
 
-    public VerifyClient(String customerId, String apiKey) {
+    private static final String BASE_URL_VERIFICATION_PROCESS = "https://verify.telesign.com";
+    private static final String BASE_URL_VERIFY_API = "https://rest-ww.telesign.com";
+    private static final String PATH_VERIFICATION = "/verification";
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com");
+    public VerifyClient(String customerId, String apiKey) {
+        super(customerId, apiKey, BASE_URL_VERIFY_API);
     }
 
     public VerifyClient(String customerId, String apiKey, String restEndpoint) {
@@ -55,8 +60,33 @@ public class VerifyClient extends RestClient {
         }
 
         params.put("phone_number", phoneNumber);
-
+        this.setRestEndpoint(BASE_URL_VERIFY_API);
         return this.post(VERIFY_SMS_RESOURCE, params);
+    }
+
+    /**
+     * Use this action to create a verification process for the specified phone number.
+     * <p>
+     * See https://developer.telesign.com/enterprise/reference/createverificationprocess for detailed API documentation.
+     */
+    public TelesignResponse createVerificationProcess(String phoneNumber, HashMap<String, Object> params) throws IOException, GeneralSecurityException {
+
+        if (params == null) {
+            params = new HashMap<String, Object>();
+        }
+
+        HashMap<String, String> infoRecipient = new HashMap<>();
+        infoRecipient.put("phone_number", phoneNumber);
+        params.put("recipient", infoRecipient);
+
+        List<Object> infoVerificationPolicy = new ArrayList<>();
+        HashMap<String, String> infoMethod = new HashMap<>();
+        infoMethod.put("method", "sms");
+        infoVerificationPolicy.add(infoMethod);
+        params.put("verification_policy", infoVerificationPolicy);
+
+        this.setRestEndpoint(BASE_URL_VERIFICATION_PROCESS);
+        return this.post(PATH_VERIFICATION, params, "application/json", "Basic");
     }
 
     /**
