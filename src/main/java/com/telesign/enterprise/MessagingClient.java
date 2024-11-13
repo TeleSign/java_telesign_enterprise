@@ -68,7 +68,7 @@ public class MessagingClient extends com.telesign.RestClient {
     }
 
     /**
-     * Retrieves the current status of the message via exclusively message method.
+     * Retrieves the status of requests initiated via the "message" method in this class
      * <p>
      * See https://developer.telesign.com/enterprise/reference/getsmsstatus for detailed API documentation.
      */
