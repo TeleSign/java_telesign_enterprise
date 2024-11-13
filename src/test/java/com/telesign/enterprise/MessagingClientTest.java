@@ -1,0 +1,222 @@
+package com.telesign.enterprise;
+
+import junit.framework.TestCase;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class MessagingClientTest extends TestCase {
+
+    private MockWebServer mockServer;
+
+    private String customerId;
+    private String apiKey;
+
+    private SimpleDateFormat rfc2616 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'");
+
+
+    public void setUp() throws Exception {
+        super.setUp();
+
+        customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
+        apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+
+        mockServer = new MockWebServer();
+        mockServer.start();
+    }
+
+    public void tearDown() throws Exception {
+        super.tearDown();
+
+        this.mockServer.shutdown();
+    }
+
+    public void testMessagingClientConstructorMinimal() throws Exception {
+        com.telesign.MessagingClient client = new com.telesign.MessagingClient(customerId, apiKey);
+        assertNotNull(client);
+    }
+
+
+    public void testMessagingClientConstructorFull() throws Exception {
+        com.telesign.MessagingClient client = new com.telesign.MessagingClient(customerId,
+                apiKey,
+                "rest endpoint",
+                0,
+                0,
+                0,
+                null,
+                "",
+                "");
+        assertNotNull(client);
+    }
+
+    public void testMessagingWithParams() throws Exception {
+
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("originating_ip", "127.0.0.1");
+            put("account_lifecycle_event", "create");
+        }};
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        com.telesign.MessagingClient client = new com.telesign.MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.message("18005555555", "Test Message Content", "MKT", params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/messaging", request.getPath());
+        assertEquals("body is not as expected",
+                "originating_ip=127.0.0.1&account_lifecycle_event=create&phone_number=18005555555&" +
+                        "message_type=MKT&message=Test+Message+Content",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testMessagingNullParams() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        com.telesign.MessagingClient client = new com.telesign.MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.message("18005555555", "Test Message Content", "ARN", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/messaging", request.getPath());
+        assertEquals("body is not as expected", "phone_number=18005555555&message_type=ARN&message=Test+Message+Content",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testOmniMessagingWithOptionalParams() throws Exception {
+
+        HashMap<String, Object> params = new HashMap<String, Object>() {{
+            put("message", new HashMap<String, Object >() {{
+                put("sms", new HashMap<String, Object >() {{
+                    put("template", "text");
+                    put("parameters", new HashMap<String, String >() {{
+                        put("text", "Test Message Content");
+                    }});
+                }});
+            }});
+            put("recipient", new HashMap<String, String >() {{
+                put("phone_number", "18005555555");
+            }});
+            put("channels", new ArrayList<HashMap<String,Object>>() {{
+                add(new HashMap<String,Object>() {{
+                    put("channel", "sms");
+                    put("fallback_time", 300);
+                }});
+            }});
+            put("message_type", "MKT");
+            put("originating_ip", "127.0.0.1");
+            put("account_lifecycle_event", "create");
+        }};
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.omnimessage(params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel", request.getPath());
+        assertEquals("body is not as expected",
+                "{\"channels\":[{\"channel\":\"sms\",\"fallback_time\":300}],\"originating_ip\":\"127.0.0.1\",\"account_lifecycle_event\":\"create\",\"recipient\":{\"phone_number\":\"18005555555\"},\"message_type\":\"MKT\",\"message\":{\"sms\":{\"template\":\"text\",\"parameters\":{\"text\":\"Test Message Content\"}}}}",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testOmniMessagingWithoutOptionalParams() throws Exception {
+
+        HashMap<String, Object> params = new HashMap<String,Object>() {{
+            put("message", new HashMap<String, Object >() {{
+                put("sms", new HashMap<String, Object >() {{
+                    put("template", "text");
+                    put("parameters", new HashMap<String, String >() {{
+                            put("text", "Test Message Content");
+                        }});
+                }});
+            }});
+            put("recipient", new HashMap<String, String >() {{
+                    put("phone_number", "18005555555");
+            }});
+            put("channels", new ArrayList<HashMap<String,Object>>() {{
+                add(new HashMap<String,Object>() {{
+                    put("channel", "sms");
+                    put("fallback_time", 300);
+                }});
+            }});
+            put("message_type", "ARN");
+        }};
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.omnimessage(params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel", request.getPath());
+        assertEquals("body is not as expected", "{\"channels\":[{\"channel\":\"sms\",\"fallback_time\":300}],\"recipient\":{\"phone_number\":\"18005555555\"},\"message_type\":\"ARN\",\"message\":{\"sms\":{\"template\":\"text\",\"parameters\":{\"text\":\"Test Message Content\"}}}}",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testMessagingStatus() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.status("FakeReferenceId", null);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/v1/messaging/FakeReferenceId", request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+
+}
+
+
