@@ -24,8 +24,11 @@ public class MessagingClientTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
 
-        customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        this.customerId = System.getenv("CUSTOMER_ID");
+        this.apiKey = System.getenv("API_KEY");
+
+        if (this.customerId == null) this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
+        if (this.apiKey == null) this.apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
 
         mockServer = new MockWebServer();
         mockServer.start();
@@ -138,7 +141,7 @@ public class MessagingClientTest extends TestCase {
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
-        client.omnimessage(params);
+        client.omniMessage(params);
 
         RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
 
@@ -181,7 +184,7 @@ public class MessagingClientTest extends TestCase {
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
-        client.omnimessage(params);
+        client.omniMessage(params);
 
         RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
 
