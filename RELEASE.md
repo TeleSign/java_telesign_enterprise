@@ -1,3 +1,9 @@
+2.3.0
+ - Added new method to send requests to Telesign Messaging
+ - Added new method to send requests to the Telesign Verify API
+ - Added new unit test for requests to Telesign Messaging
+ - Added new unit test for requests to the Telesign Verify API
+
 2.2.0
  - AutoVerify rebranded to AppVerify, please update your integration
 
