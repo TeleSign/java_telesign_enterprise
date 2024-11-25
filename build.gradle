@@ -1,81 +1,111 @@
 group 'com.telesign.enterprise'
-version '2.3.0'
+version '2.3.1'
 
 apply plugin: 'java'
-
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {
-    implementation('com.telesign:telesign:[2.2.4,)')
+    implementation('com.telesign:telesign:2.3.1')
+    implementation 'com.google.code.gson:gson:[2.7,3.0)'
     testImplementation( group: 'junit', name: 'junit', version: '[4.1,)')
     testImplementation( group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '[4.7.0,)')
 }
 
 apply plugin: 'idea'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+tasks.register('javadocJar', Jar) {
+    from tasks.javadoc
+    archiveClassifier.set('javadoc')
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allSource
+    archiveClassifier.set('sources')
+}
+
+tasks.register("fatJar", Jar) {
+    archiveClassifier.set("all")
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+tasks.register('clearOldJar', Delete) {
+    delete fileTree(dir: "build/libs", includes: [".bin"])
+}
+
+
+tasks.register('copyJar', Delete) {
+    dependsOn("clearOldJar")
+    from('fatJar')
+    into('bin')
 }
 
 artifacts {
-    archives javadocJar, sourcesJar
+    archives jar
+    archives javadocJar
+    archives sourcesJar
 }
 
 signing {
-    sign configurations.archives
+    sign(publishing.publications)
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+            artifact fatJar
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
+            groupId = 'com.telesign.enterprise'
+            artifactId = 'telesignenterprise'
+            version = '2.3.0'
 
-            pom.project {
-                name 'TeleSign Enterprise SDK'
-                packaging 'jar'
-                description 'The Telesign Full-service Java SDK enhances the functionality of the Telesign Self-service Java SDK, providing access to a broader range of Telesign APIs. See our source code on GitHub (https://github.com/TeleSign/java_telesign_enterprise) for installation instructions and other details.'
-                url 'https://github.com/TeleSign/java_telesign_enterprise'
+            pom {
+                name = 'TeleSign Enterprise SDK'
+                description = 'The Telesign Full-service Java SDK enhances the functionality of the Telesign Self-service Java SDK, providing access to a broader range of Telesign APIs. See our source code on GitHub (https://github.com/TeleSign/java_telesign_enterprise) for installation instructions and other details.'
+                url = 'https://github.com/TeleSign/java_telesign_enterprise'
 
                 scm {
-                    connection 'scm:git:https://github.com/TeleSign/java_telesign_enterprise.git'
-                    developerConnection 'scm:git:git@github.com:TeleSign/java_telesign_enterprise.git'
-                    url 'https://github.com/TeleSign/java_telesign_enterprise'
+                    connection = 'scm:git:https://github.com/TeleSign/java_telesign_enterprise.git'
+                    developerConnection = 'scm:git:git@github.com:TeleSign/java_telesign_enterprise.git'
+                    url = 'https://github.com/TeleSign/java_telesign_enterprise'
                 }
 
                 licenses {
                     license {
-                        name 'MIT License'
-                        url 'http://www.opensource.org/licenses/mit-license.php'
-                    }
-                    license {
-                        name 'Apache Software License (ASL) version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name = 'MIT License'
+                        url = 'http://www.opensource.org/licenses/mit-license.php'
                     }
                 }
-
                 developers {
                     developer {
-                        name 'TeleSign Corp.'
-                        organizationUrl 'https://www.telesign.com'
+                        name = 'TeleSign Corp.'
+                        organizationUrl = 'https://www.telesign.com'
                     }
                 }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+            credentials {
+                username = project.findProperty('ossrhUsername')
+                password = project.findProperty('ossrhPassword')
             }
         }
     }
