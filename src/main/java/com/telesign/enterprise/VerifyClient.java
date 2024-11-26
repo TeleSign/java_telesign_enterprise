@@ -19,7 +19,6 @@ public class VerifyClient extends RestClient {
     private static final String VERIFY_SMS_RESOURCE = "/v1/verify/sms";
     private static final String VERIFY_VOICE_RESOURCE = "/v1/verify/call";
     private static final String VERIFY_SMART_RESOURCE = "/v1/verify/smart";
-    private static final String VERIFY_PUSH_RESOURCE = "/v2/verify/push";
     private static final String VERIFY_STATUS_RESOURCE = "/v1/verify/%s";
     private static final String VERIFY_COMPLETION_RESOURCE = "/v1/verify/completion/%s";
 
@@ -125,25 +124,6 @@ public class VerifyClient extends RestClient {
         params.put("ucid", ucid);
 
         return this.post(VERIFY_SMART_RESOURCE, params);
-    }
-
-    /**
-     * The Push Verify web service allows you to provide on-device transaction authorization for your end users. It
-     * works by delivering authorization requests to your end users via push notification, and then by receiving their
-     * permission responses via their mobile device's wireless Internet connection.
-     * <p>
-     * See https://developer.telesign.com/docs/rest_api-verify-push for detailed API documentation.
-     */
-    public TelesignResponse push(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
-
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        params.put("phone_number", phoneNumber);
-        params.put("ucid", ucid);
-
-        return this.post(VERIFY_PUSH_RESOURCE, params);
     }
 
     /**
