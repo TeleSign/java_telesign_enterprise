@@ -1,4 +1,4 @@
-package com.telesign.enterprise.example.verify_completion;
+package verify_completion;
 
 import com.telesign.RestClient;
 import com.telesign.Util;
