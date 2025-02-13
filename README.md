@@ -57,6 +57,62 @@ This will also install the Telesign Self-service Java SDK since it is a dependen
 
 If you use a Telesign SDK to make your request, authentication is handled behind-the-scenes for you. All you need to provide is your Customer ID and API Key. The SDKs apply Digest authentication whenever they make a request to a Telesign service where it is supported. When Digest authentication is not supported, the SDKs apply Basic authentication.
 
+## SMPP TLSv1.2 Configuration
+
+To configure SMPP TLSv1.2 in your Java application, follow these steps:
+
+1. Ensure that your Java application is using Java 8 or later, as specified in the `build.gradle` file.
+2. Use the `javax.net.ssl` package to configure the SSL/TLS settings in your Java application.
+3. Set the desired encryption cipher by specifying it in the SSL/TLS configuration.
+
+Here is an example of how to configure SSL/TLS settings and set the desired encryption cipher:
+
+```java
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+public class SmppTlsClient extends RestClient {
+
+    public SmppTlsClient(String customerId, String apiKey, String restEndpoint) {
+        super(customerId, apiKey, restEndpoint);
+        configureSslSettings();
+    }
+
+    private void configureSslSettings() {
+        try {
+            // Load the certificate
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            InputStream caInput = getClass().getResourceAsStream("/path/to/your/certificate.crt");
+            X509Certificate ca = (X509Certificate) cf.generateCertificate(caInput);
+
+            // Create a KeyStore containing the trusted certificate
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+            // Create a TrustManager that trusts the certificate in the KeyStore
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            tmf.init(keyStore);
+            X509TrustManager trustManager = (X509TrustManager) tmf.getTrustManagers()[0];
+
+            // Create an SSLContext that uses the TrustManager
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, new javax.net.ssl.TrustManager[]{trustManager}, null);
+
+            // Set the SSLContext to be used by the RestClient
+            setSslSocketFactory(sslContext.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
 ## What's next
 
 * Learn to send a request to Telesign with code with one of our [tutorials](https://developer.telesign.com/enterprise/docs/tutorials).
