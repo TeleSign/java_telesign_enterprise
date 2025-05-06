@@ -58,7 +58,7 @@ public class VerifyClientTest extends TestCase {
     public void testVerifyClientEndpointVerificationWithoutParams() throws Exception {
         this.mockServer.enqueue(new MockResponse().setBody("{}"));
 
-        VerifyClient client = new VerifyClient(this.customerId,
+        VerifyClient.OmniVerifyClient client = new VerifyClient.OmniVerifyClient(this.customerId,
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
@@ -72,13 +72,13 @@ public class VerifyClientTest extends TestCase {
         assertEquals("body is not as expected", bodyExpected, request.getBody().readUtf8());
         assertEquals("method is not as expected", "POST", request.getMethod());
         assertEquals("path is not as expected", "/verification", request.getPath());
-        assertEquals("Content-Type header is not as expected", "application/json; charset=utf-8", request.getHeader("Content-Type"));
+        assertEquals("Content-Type header is not as expected", "application/json", request.getHeader("Content-Type"));
     }
 
     public void testVerifyClientEndpointVerificationWithParams() throws Exception {
         this.mockServer.enqueue(new MockResponse().setBody("{}"));
 
-        VerifyClient client = new VerifyClient(this.customerId,
+        VerifyClient.OmniVerifyClient client = new VerifyClient.OmniVerifyClient(this.customerId,
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
@@ -106,7 +106,7 @@ public class VerifyClientTest extends TestCase {
         assertEquals("body is not as expected", bodyExpected, request.getBody().readUtf8());
         assertEquals("method is not as expected", "POST", request.getMethod());
         assertEquals("path is not as expected", "/verification", request.getPath());
-        assertEquals("Content-Type header is not as expected", "application/json; charset=utf-8", request.getHeader("Content-Type"));
+        assertEquals("Content-Type header is not as expected", "application/json", request.getHeader("Content-Type"));
     }
 }
 

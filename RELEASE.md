@@ -1,3 +1,6 @@
+2.4.0
+- Added tracking to requests.
+
 2.3.1
 - Removed Push Verify method in VerifyClient class.
 
