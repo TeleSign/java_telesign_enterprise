@@ -1,20 +1,22 @@
-package com.telesign.enterprise.example.verify_voice;
+package verify_voice; 
 
 import com.telesign.RestClient;
 import com.telesign.enterprise.VerifyClient;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
-public class SendCustomVoiceCallInDifferentLanguage {
+public class App {
 
     public static void main(String[] args) {
 
-        String customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        String apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        String customerId = System.getenv().getOrDefault("CUSTOMER_ID", "FFFFFFFF-EEEE-DDDD-1234-AB1234567890");
+        String apiKey = System.getenv().getOrDefault("API_KEY", "EXAMPLE----ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==");
 
-        String phoneNumber = "phone_number";
+        String phoneNumber = System.getenv().getOrDefault("PHONE_NUMBER", "123456789"); //Your test phone number with no special characters or spaces goes here.
         String language = "fr-FR";
-        String ttsMessage = "Votre code de vérification Widgets 'n' More est $$CODE$$.";
+      	String verifyCode = Util.randomWithNDigits(5);
+        String ttsMessage = "Votre code de vérification Widgets 'n' More est " + verifyCode;
 
         HashMap<String, String> params = new HashMap<>();
         params.put("language", language);
@@ -23,6 +25,17 @@ public class SendCustomVoiceCallInDifferentLanguage {
         try {
             VerifyClient verifyClient = new VerifyClient(customerId, apiKey);
             RestClient.TelesignResponse telesignResponse = verifyClient.voice(phoneNumber, params);
+          
+            Scanner s = new Scanner(System.in);
+            System.out.println(telesignResponse.body);
+            System.out.println("Please enter your verification code:");
+            String code = s.next();
+
+            if (verifyCode.equalsIgnoreCase(code)) {
+                System.out.println("Your code is correct.");
+            } else {
+                System.out.println("Your code is incorrect.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

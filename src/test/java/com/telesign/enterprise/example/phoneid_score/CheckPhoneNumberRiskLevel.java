@@ -1,16 +1,17 @@
-package com.telesign.enterprise.example.phoneid_score;
+package phoneid_score;
 
 import com.telesign.RestClient;
 import com.telesign.enterprise.ScoreClient;
 
-public class CheckPhoneNumberRiskLevel {
+public class App {
 
     public static void main(String[] args) {
 
-        String customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        String apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        String customerId = System.getenv().getOrDefault("CUSTOMER_ID", "FFFFFFFF-EEEE-DDDD-1234-AB1234567890");
+        String apiKey = System.getenv().getOrDefault("API_KEY", "EXAMPLE----ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==");
 
-        String phoneNumber = "phone_number";
+        String phoneNumber = System.getenv().getOrDefault("PHONE_NUMBER", "123456789");// Your test phone number with no special characters or spaces.
+
         String accountLifecycleEvent = "create";
 
         try {

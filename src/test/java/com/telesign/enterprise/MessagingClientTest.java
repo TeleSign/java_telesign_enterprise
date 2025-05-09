@@ -41,13 +41,13 @@ public class MessagingClientTest extends TestCase {
     }
 
     public void testMessagingClientConstructorMinimal() throws Exception {
-        com.telesign.MessagingClient client = new com.telesign.MessagingClient(customerId, apiKey);
+        com.telesign.enterprise.MessagingClient client = new MessagingClient(customerId, apiKey);
         assertNotNull(client);
     }
 
 
     public void testMessagingClientConstructorFull() throws Exception {
-        com.telesign.MessagingClient client = new com.telesign.MessagingClient(customerId,
+        MessagingClient client = new MessagingClient(customerId,
                 apiKey,
                 "rest endpoint",
                 0,
@@ -68,7 +68,7 @@ public class MessagingClientTest extends TestCase {
 
         this.mockServer.enqueue(new MockResponse().setBody("{}"));
 
-        com.telesign.MessagingClient client = new com.telesign.MessagingClient(this.customerId,
+        MessagingClient client = new MessagingClient(this.customerId,
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
@@ -92,7 +92,7 @@ public class MessagingClientTest extends TestCase {
 
         this.mockServer.enqueue(new MockResponse().setBody("{}"));
 
-        com.telesign.MessagingClient client = new com.telesign.MessagingClient(this.customerId,
+        MessagingClient client = new MessagingClient(this.customerId,
                 this.apiKey,
                 this.mockServer.url("").toString().replaceAll("/$", ""));
 
