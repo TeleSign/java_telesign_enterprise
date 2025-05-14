@@ -21,14 +21,18 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     private static final String PHONEID_CONTACT_RESOURCE = "/v1/phoneid/contact/%s";
     private static final String PHONEID_LIVE_RESOURCE = "/v1/phoneid/live/%s";
     private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = "/v1/phoneid/number_deactivation/%s";
+    private static final String sdkVersion = PhoneIdClient.class.getPackage().getImplementationVersion();
+    private static final String sdkSource = "java_telesign_enterprise";
+    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+
 
     public PhoneIdClient(String customerId, String apiKey) {
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com");
+        super(customerId, apiKey, "https://rest-ww.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
     }
 
     public PhoneIdClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint);
+        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
     }
 
     public PhoneIdClient(String customerId,
@@ -40,7 +44,7 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
                          Proxy proxy,
                          final String proxyUsername,
                          final String proxyPassword) {
-        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword);
+        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
     }
 
     /**
