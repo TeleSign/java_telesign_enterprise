@@ -67,13 +67,9 @@ public class OmniVerifyClient extends RestClient {
      * <p>
      * See https://developer.telesign.com/enterprise/reference/getverificationprocess for detailed API documentation.
      */
-    public TelesignResponse getVerificationProcess(String referenceId, HashMap<String, String> params)
+    public TelesignResponse getVerificationProcess(String referenceId)
             throws IOException, GeneralSecurityException {
 
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        return this.get(String.format(PATH_VERIFICATION_RESOURCE, referenceId), params);
+        return this.get(String.format(PATH_VERIFICATION_RESOURCE, referenceId), null);
     }
 }

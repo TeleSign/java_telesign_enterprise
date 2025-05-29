@@ -91,7 +91,7 @@ public class OmniVerifyClientTest extends TestCase {
         assertEquals("Content-Type header is not as expected", "application/json", request.getHeader("Content-Type"));
     }
 
-    public void testOmniVerifyClientRetrieveVerificationProcessWithoutParams() throws Exception {
+    public void testOmniVerifyClientRetrieveVerificationProcess() throws Exception {
         this.mockServer.enqueue(new MockResponse().setBody("{}"));
 
         OmniVerifyClient client = new OmniVerifyClient(this.customerId,
@@ -100,32 +100,13 @@ public class OmniVerifyClientTest extends TestCase {
 
         String referenceId = "referenceId";
 
-        client.getVerificationProcess(referenceId, null);
+        client.getVerificationProcess(referenceId);
 
         RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
 
         assertEquals("body is not as expected", "", request.getBody().readUtf8());
         assertEquals("method is not as expected", "GET", request.getMethod());
         assertEquals("path is not as expected", String.format("/verification/%s", referenceId), request.getPath());
-    }
-
-    public void testOmniVerifyClientRetrieveVerificationProcessWithParams() throws Exception {
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        OmniVerifyClient client = new OmniVerifyClient(this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", ""));
-
-        String referenceId = "referenceId";
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("param1", "value1");
-        client.getVerificationProcess(referenceId, params);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "GET", request.getMethod());
-        assertEquals("path is not as expected", String.format("/verification/%s?param1=value1", referenceId), request.getPath());
     }
 
 }

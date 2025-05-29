@@ -5,9 +5,7 @@ import com.telesign.RestClient;
 import java.io.IOException;
 import java.net.Proxy;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -129,6 +127,7 @@ public class VerifyClient extends RestClient {
         return this.put(String.format(VERIFY_COMPLETION_RESOURCE, referenceId), params);
     }
 
+    @Deprecated
     static class OmniVerifyClient extends RestClient
     {
         private static final String PATH_VERIFICATION = "/verification";
@@ -159,23 +158,8 @@ public class VerifyClient extends RestClient {
          * See https://developer.telesign.com/enterprise/reference/createverificationprocess for detailed API documentation.
          */
         public TelesignResponse createVerificationProcess(String phoneNumber, HashMap<String, Object> params) throws IOException, GeneralSecurityException {
-
-            if (params == null) {
-                params = new HashMap<String, Object>();
-            }
-
-            HashMap<String, String> infoRecipient = new HashMap<>();
-            infoRecipient.put("phone_number", phoneNumber);
-            params.put("recipient", infoRecipient);
-
-            if (!params.containsKey("verification_policy")) {
-                List<Object> infoVerificationPolicy = new ArrayList<>();
-                HashMap<String, String> infoMethod = new HashMap<>();
-                infoMethod.put("method", "sms");
-                infoVerificationPolicy.add(infoMethod);
-                params.put("verification_policy", infoVerificationPolicy);
-            }
-            return this.post(PATH_VERIFICATION, params, "application/json", "Basic");
+            com.telesign.enterprise.OmniVerifyClient client = new com.telesign.enterprise.OmniVerifyClient(customerId, apiKey);
+            return client.createVerificationProcess(phoneNumber, params);
         }
     }
 }
