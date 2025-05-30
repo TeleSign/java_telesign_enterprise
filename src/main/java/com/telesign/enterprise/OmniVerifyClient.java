@@ -8,6 +8,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OmniVerifyClient extends RestClient {
     private static final String VERIFY_STATUS_RESOURCE = "/v1/verify/%s";
@@ -19,6 +20,7 @@ public class OmniVerifyClient extends RestClient {
 
     private static final String PATH_VERIFICATION = "/verification";
     private static final String PATH_VERIFICATION_RESOURCE = PATH_VERIFICATION + "/%s";
+    private static final String PATH_VERIFICATION_RESOURCE_UPDATE = PATH_VERIFICATION + "/%s/state";
 
     public OmniVerifyClient(String customerId, String apiKey) {
         super(customerId, apiKey, "https://verify.telesign.com", sdkSource, sdkVersion,
@@ -71,5 +73,20 @@ public class OmniVerifyClient extends RestClient {
             throws IOException, GeneralSecurityException {
 
         return this.get(String.format(PATH_VERIFICATION_RESOURCE, referenceId), null);
+    }
+
+    /**
+     * Use this action to update a verification process for the specified reference id.
+     * <p>
+     * See https://developer.telesign.com/enterprise/reference/updateverificationprocess for detailed API documentation.
+     */
+    public TelesignResponse updateVerificationProcess(String referenceId, String action, String securityFactor)
+            throws IOException, GeneralSecurityException {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("action", action);
+        params.put("security_factor", securityFactor);
+
+        return patch(String.format(PATH_VERIFICATION_RESOURCE_UPDATE, referenceId), params, JSON_CONTENT_TYPE, AUTH_BASIC);
     }
 }
