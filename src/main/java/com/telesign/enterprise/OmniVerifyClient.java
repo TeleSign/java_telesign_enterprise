@@ -65,7 +65,7 @@ public class OmniVerifyClient extends RestClient {
     }
 
     /**
-     * Use this action to get a verification process for the specified reference id.
+     * Use this action to get a verification process for the specified reference ID.
      * <p>
      * See https://developer.telesign.com/enterprise/reference/getverificationprocess for detailed API documentation.
      */
@@ -76,7 +76,7 @@ public class OmniVerifyClient extends RestClient {
     }
 
     /**
-     * Use this action to update a verification process for the specified reference id.
+     * Use this action to update a verification process for the specified reference ID.
      * <p>
      * See https://developer.telesign.com/enterprise/reference/updateverificationprocess for detailed API documentation.
      */
