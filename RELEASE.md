@@ -1,6 +1,8 @@
 2.5.0
 - Added method to retrieve verification process.
-- Added unit test for retrieve verification process.
+- Added unit test for retrieving verification process.
+- Added method to update verification process.
+- Added unit test for updating verification process.
 
 2.4.0
 - Added tracking to requests.

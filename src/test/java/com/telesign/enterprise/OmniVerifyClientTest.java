@@ -109,4 +109,25 @@ public class OmniVerifyClientTest extends TestCase {
         assertEquals("path is not as expected", String.format("/verification/%s", referenceId), request.getPath());
     }
 
+    public void testOmniVerifyClientUpdateVerificationProcess() throws Exception {
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        OmniVerifyClient client = new OmniVerifyClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String referenceId = "referenceId";
+        String action = "finalize";
+        String securityFactor = "121212";
+
+        client.updateVerificationProcess(referenceId, action, securityFactor);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        String bodyExpected = "{\"security_factor\":\"121212\",\"action\":\"finalize\"}";
+        assertEquals("body is not as expected", bodyExpected, request.getBody().readUtf8());
+        assertEquals("method is not as expected", "PATCH", request.getMethod());
+        assertEquals("path is not as expected", String.format("/verification/%s/state", referenceId), request.getPath());
+    }
+
 }
