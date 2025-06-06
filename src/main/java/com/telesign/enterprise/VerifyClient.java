@@ -5,9 +5,7 @@ import com.telesign.RestClient;
 import java.io.IOException;
 import java.net.Proxy;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -127,55 +125,5 @@ public class VerifyClient extends RestClient {
      */
     public TelesignResponse completion(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
         return this.put(String.format(VERIFY_COMPLETION_RESOURCE, referenceId), params);
-    }
-
-    static class OmniVerifyClient extends RestClient
-    {
-        private static final String PATH_VERIFICATION = "/verification";
-
-        public OmniVerifyClient(String customerId, String apiKey) {
-            super(customerId, apiKey, "https://verify.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
-        }
-
-        public OmniVerifyClient(String customerId, String apiKey, String restEndpoint) {
-            super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
-        }
-
-        public OmniVerifyClient(String customerId,
-                            String apiKey,
-                            String restEndpoint,
-                            Integer connectTimeout,
-                            Integer readTimeout,
-                            Integer writeTimeout,
-                            Proxy proxy,
-                            final String proxyUsername,
-                            final String proxyPassword) {
-            super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
-        }
-
-        /**
-         * Use this action to create a verification process for the specified phone number.
-         * <p>
-         * See https://developer.telesign.com/enterprise/reference/createverificationprocess for detailed API documentation.
-         */
-        public TelesignResponse createVerificationProcess(String phoneNumber, HashMap<String, Object> params) throws IOException, GeneralSecurityException {
-
-            if (params == null) {
-                params = new HashMap<String, Object>();
-            }
-
-            HashMap<String, String> infoRecipient = new HashMap<>();
-            infoRecipient.put("phone_number", phoneNumber);
-            params.put("recipient", infoRecipient);
-
-            if (!params.containsKey("verification_policy")) {
-                List<Object> infoVerificationPolicy = new ArrayList<>();
-                HashMap<String, String> infoMethod = new HashMap<>();
-                infoMethod.put("method", "sms");
-                infoVerificationPolicy.add(infoMethod);
-                params.put("verification_policy", infoVerificationPolicy);
-            }
-            return this.post(PATH_VERIFICATION, params, "application/json", "Basic");
-        }
     }
 }

@@ -1,5 +1,5 @@
 group 'com.telesign.enterprise'
-version '2.4.0'
+version '2.5.0'
 
 apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation('com.telesign:telesign:2.4.0')
+    implementation('com.telesign:telesign:2.5.0')
     //implementation(project(":com.telesign"))
     implementation 'com.google.code.gson:gson:[2.7,3.0)'
     testImplementation( group: 'junit', name: 'junit', version: '[4.1,)')
@@ -79,7 +79,7 @@ publishing {
 
             groupId = 'com.telesign.enterprise'
             artifactId = 'telesignenterprise'
-            version = '2.3.1'
+            version = '2.5.0'
 
             pom {
                 name = 'TeleSign Enterprise SDK'
