@@ -16,11 +16,13 @@ import java.util.Map;
  */
 public class PhoneIdClient extends com.telesign.PhoneIdClient {
 
-    private static final String PHONEID_STANDARD_RESOURCE = "/v1/phoneid/standard/%s";
-    private static final String PHONEID_SCORE_RESOURCE = "/v1/phoneid/score/%s";
-    private static final String PHONEID_CONTACT_RESOURCE = "/v1/phoneid/contact/%s";
-    private static final String PHONEID_LIVE_RESOURCE = "/v1/phoneid/live/%s";
-    private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = "/v1/phoneid/number_deactivation/%s";
+    private static final String PHONEID_RESOURCE = "/v1/phoneid";
+    private static final String PHONEID_STANDARD_RESOURCE = PHONEID_RESOURCE + "/standard/%s";
+    private static final String PHONEID_SCORE_RESOURCE = PHONEID_RESOURCE + "/score/%s";
+    private static final String PHONEID_CONTACT_RESOURCE = PHONEID_RESOURCE + "/contact/%s";
+    private static final String PHONEID_LIVE_RESOURCE = PHONEID_RESOURCE + "/live/%s";
+    private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = PHONEID_RESOURCE + "/number_deactivation/%s";
+    private static final String PHONEID_GET_INFO_RESOURCE = PHONEID_RESOURCE + "/%s";
     private static final String sdkVersion = PhoneIdClient.class.getPackage().getImplementationVersion();
     private static final String sdkSource = "java_telesign_enterprise";
     private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
@@ -126,5 +128,49 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
         params.put("ucid", ucid);
 
         return this.get(String.format(PHONEID_NUMBER_DEACTIVATION_RESOURCE, phoneNumber), params);
+    }
+
+    /**
+     * Enter a phone number with country code to receive detailed information about carrier, location, and other details.
+     * <p>
+     * See https://developer.telesign.com/enterprise/reference/submitphonenumberforidentity for detailed API documentation.
+     */
+
+    public TelesignResponse getInfo(String phoneNumber, Map<String, Object> params) throws IOException, GeneralSecurityException {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+
+        if (!params.containsKey("consent")) {
+            Map<String, Object> consent = new HashMap<>();
+            consent.put("method", 1);
+            params.put("consent", consent);
+        }
+
+        String url = String.format(PHONEID_GET_INFO_RESOURCE, phoneNumber);
+
+        return this.post(url, params, "application/json", "Basic");
+    }
+
+    /**
+     * Enter a phone number with country code to receive detailed information about carrier, location, and other details.
+     * <p>
+     * See https://developer.telesign.com/enterprise/reference/submitphonenumberforidentityalt for detailed API documentation.
+     */
+
+    public TelesignResponse getInfoAlt(String phoneNumber, Map<String, Object> params) throws IOException, GeneralSecurityException {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+
+        params.put("phone_number", phoneNumber);
+
+        if (!params.containsKey("consent")) {
+            Map<String, Object> consent = new HashMap<>();
+            consent.put("method", 1);
+            params.put("consent", consent);
+        }
+
+        return this.post(PHONEID_RESOURCE, params, "application/json", "Basic");
     }
 }

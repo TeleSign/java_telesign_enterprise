@@ -1,3 +1,6 @@
+2.6.0
+- Added methods to get information about a specified phone number.
+
 2.5.0
 - Added method to retrieve verification process.
 - Added unit test for retrieving verification process.

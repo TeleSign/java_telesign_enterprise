@@ -133,13 +133,61 @@ public class PhoneIdClientTest extends TestCase {
         RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
 
         assertEquals("method is not as expected", "GET", request.getMethod());
-        assertEquals("path is not as expected", "/v1/phoneid/standard/18005555555?originating_ip=127.0.0.1", request.getPath());
+        assertEquals("path is not as expected", "/v1/phoneid/standard/18005555555", request.getPath());
         assertEquals("body is not as expected", "",
                 request.getBody().readUtf8());
         assertEquals("Content-Type header is not as expected", "",
                 request.getHeader("Content-Type"));
         assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
                 request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testPhoneIdGetInfo() throws Exception {
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String phone_number = "11234567890";
+
+        client.getInfo(phone_number, params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/phoneid/" + phone_number, request.getPath());
+        assertEquals("body is not as expected", "{\"consent\":{\"method\":1}}",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
+    }
+
+    public void testPhoneIdGetInfoAlt() throws Exception {
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        PhoneIdClient client = new PhoneIdClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String phone_number = "11234567890";
+
+        client.getInfoAlt(phone_number, params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/phoneid", request.getPath());
+        assertEquals("body is not as expected", "{\"consent\":{\"method\":1},\"phone_number\":\"11234567890\"}",
+                request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
     }
 }
 

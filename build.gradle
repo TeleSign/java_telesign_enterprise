@@ -1,5 +1,5 @@
 group 'com.telesign.enterprise'
-version '2.5.0'
+version '2.6.0'
 
 apply plugin: 'java'
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -79,7 +79,7 @@ publishing {
 
             groupId = 'com.telesign.enterprise'
             artifactId = 'telesignenterprise'
-            version = '2.5.0'
+            version = '2.6.0'
 
             pom {
                 name = 'TeleSign Enterprise SDK'
