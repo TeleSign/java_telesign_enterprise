@@ -15,3 +15,4 @@ bin/
 
 # Other
 .DS_Store
+gradle.properties
