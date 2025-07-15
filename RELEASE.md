@@ -1,3 +1,6 @@
+2.6.1
+- Adjust deployment process
+
 2.6.0
 - Added methods to get information about a specified phone number.
 

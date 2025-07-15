@@ -3,7 +3,7 @@ package phoneid_score;
 import com.telesign.RestClient;
 import com.telesign.enterprise.ScoreClient;
 
-public class App {
+public class CheckPhoneNumberRiskLevel {
 
     public static void main(String[] args) {
 

@@ -7,7 +7,7 @@ import com.telesign.enterprise.VerifyClient;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class App {
+public class ReportCompletionAfterReceivingVoiceCall {
 
     public static void main(String[] args) {
 

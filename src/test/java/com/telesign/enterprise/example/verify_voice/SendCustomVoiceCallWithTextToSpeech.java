@@ -6,7 +6,7 @@ import com.telesign.enterprise.VerifyClient;
 
 import java.util.HashMap;
 
-public class App {
+public class SendCustomVoiceCallWithTextToSpeech {
 
     public static void main(String[] args) {
 
