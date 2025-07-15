@@ -3,7 +3,7 @@ package phoneid_number_deactivation;
 import com.telesign.RestClient;
 import com.telesign.enterprise.PhoneIdClient;
 
-public class App {
+public class CheckPhoneNumberDeactivated {
 
     public static void main(String[] args) {
 
