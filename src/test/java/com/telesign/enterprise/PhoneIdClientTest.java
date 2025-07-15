@@ -133,7 +133,7 @@ public class PhoneIdClientTest extends TestCase {
         RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
 
         assertEquals("method is not as expected", "GET", request.getMethod());
-        assertEquals("path is not as expected", "/v1/phoneid/standard/18005555555?originating_ip=127.0.0.1", request.getPath());
+        assertEquals("path is not as expected", "/v1/phoneid/standard/18005555555", request.getPath());
         assertEquals("body is not as expected", "",
                 request.getBody().readUtf8());
         assertEquals("Content-Type header is not as expected", "",
