@@ -1,3 +1,6 @@
+3.0.0
+- Removed Contact method in PhoneId class.
+
 2.6.1
 - Adjust deployment process
 

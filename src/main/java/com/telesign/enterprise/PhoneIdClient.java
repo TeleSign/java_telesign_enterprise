@@ -19,7 +19,6 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     private static final String PHONEID_RESOURCE = "/v1/phoneid";
     private static final String PHONEID_STANDARD_RESOURCE = PHONEID_RESOURCE + "/standard/%s";
     private static final String PHONEID_SCORE_RESOURCE = PHONEID_RESOURCE + "/score/%s";
-    private static final String PHONEID_CONTACT_RESOURCE = PHONEID_RESOURCE + "/contact/%s";
     private static final String PHONEID_LIVE_RESOURCE = PHONEID_RESOURCE + "/live/%s";
     private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = PHONEID_RESOURCE + "/number_deactivation/%s";
     private static final String PHONEID_GET_INFO_RESOURCE = PHONEID_RESOURCE + "/%s";
@@ -77,23 +76,6 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
         params.put("ucid", ucid);
 
         return this.get(String.format(PHONEID_SCORE_RESOURCE, phoneNumber), params);
-    }
-
-    /**
-     * The PhoneID Contact API delivers contact information related to the subscriber's phone number to provide another
-     * set of indicators for established risk engines.
-     * <p>
-     * See https://developer.telesign.com/docs/rest_api-phoneid-contact for detailed API documentation.
-     */
-    public TelesignResponse contact(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
-
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        params.put("ucid", ucid);
-
-        return this.get(String.format(PHONEID_CONTACT_RESOURCE, phoneNumber), params);
     }
 
     /**
