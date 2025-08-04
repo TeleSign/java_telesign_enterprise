@@ -1,3 +1,6 @@
+3.1.0
+- Added full support for App Verify API
+
 3.0.0
 - Removed Contact method in PhoneId class.
 
