@@ -46,7 +46,8 @@ You should then see a message that indicates the build was successful.
 4. Add the following dependency to the `dependencies` block in the file "app/build.gradle.kts" in your project:
 
    ```
-   implementation("com.telesign.enterprise:telesignenterprise:2.2.3")
+   implementation("com.telesign.enterprise:telesignenterprise:3.+")
+   implementation("com.telesign:telesign:3.+")
    ```
 
 This pulls in the Telesign Full-service Java SDK.

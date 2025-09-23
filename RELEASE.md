@@ -1,3 +1,6 @@
+3.1.1
+- Update SDK install instructions on GitHub to default to latest version of Telesign SDK
+
 3.1.0
 - Added full support for App Verify API
 
