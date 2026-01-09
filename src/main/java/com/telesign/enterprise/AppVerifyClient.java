@@ -14,17 +14,17 @@ public class AppVerifyClient extends com.telesign.AppVerifyClient {
     private static final String REPORT_TIMEOUT_RESOURCE = APPVERIFY_RESOURCE + "/finalize/timeout";
     private static final String STATUS_RESOURCE = APPVERIFY_RESOURCE + "/%s";
     private static final String SENDCODE_RESOURCE = APPVERIFY_RESOURCE + "/initiate";
-    private static final String sdkVersion = AppVerifyClient.class.getPackage().getImplementationVersion();
-    private static final String sdkSource = "java_telesign_enterprise";
-    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_VERSION = AppVerifyClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_SOURCE = "java_telesign_enterprise";
+    private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
     public AppVerifyClient(String customerId, String apiKey) {
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public AppVerifyClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public AppVerifyClient(String customerId,
@@ -36,7 +36,7 @@ public class AppVerifyClient extends com.telesign.AppVerifyClient {
                          Proxy proxy,
                          final String proxyUsername,
                          final String proxyPassword) {
-        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     /**

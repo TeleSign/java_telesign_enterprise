@@ -3,7 +3,6 @@ package com.telesign.enterprise.example.appverify;
 import com.telesign.RestClient;
 import com.telesign.enterprise.AppVerifyClient;
 
-import java.util.HashMap;
 
 public class SendReportCallerIdAppVerify {
 

@@ -22,18 +22,18 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     private static final String PHONEID_LIVE_RESOURCE = PHONEID_RESOURCE + "/live/%s";
     private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = PHONEID_RESOURCE + "/number_deactivation/%s";
     private static final String PHONEID_GET_INFO_RESOURCE = PHONEID_RESOURCE + "/%s";
-    private static final String sdkVersion = PhoneIdClient.class.getPackage().getImplementationVersion();
-    private static final String sdkSource = "java_telesign_enterprise";
-    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_VERSION = PhoneIdClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_SOURCE = "java_telesign_enterprise";
+    private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
 
     public PhoneIdClient(String customerId, String apiKey) {
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public PhoneIdClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public PhoneIdClient(String customerId,
@@ -45,7 +45,7 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
                          Proxy proxy,
                          final String proxyUsername,
                          final String proxyPassword) {
-        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     /**

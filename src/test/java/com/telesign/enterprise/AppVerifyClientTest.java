@@ -5,9 +5,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class AppVerifyClientTest extends TestCase {
@@ -23,8 +21,12 @@ public class AppVerifyClientTest extends TestCase {
         this.customerId = System.getenv("CUSTOMER_ID");
         this.apiKey = System.getenv("API_KEY");
 
-        if (this.customerId == null) this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        if (this.apiKey == null) this.apiKey = "ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        if (this.customerId == null) {
+            this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
+        }
+        if (this.apiKey == null) {
+            this.apiKey = "ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        }
 
         this.mockServer = new MockWebServer();
         this.mockServer.start();

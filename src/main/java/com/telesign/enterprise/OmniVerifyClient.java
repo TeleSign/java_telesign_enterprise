@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 public class OmniVerifyClient extends RestClient {
-    private static final String VERIFY_STATUS_RESOURCE = "/v1/verify/%s";
-    private static final String sdkVersion = VerifyClient.class.getPackage().getImplementationVersion();
-    private static final String sdkSource = "java_telesign_enterprise";
-    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage()
+    private static final String SDK_VERSION = VerifyClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_SOURCE = "java_telesign_enterprise";
+    private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage()
             .getImplementationVersion();
 
 
@@ -23,19 +22,19 @@ public class OmniVerifyClient extends RestClient {
     private static final String PATH_VERIFICATION_RESOURCE_UPDATE = PATH_VERIFICATION + "/%s/state";
 
     public OmniVerifyClient(String customerId, String apiKey) {
-        super(customerId, apiKey, "https://verify.telesign.com", sdkSource, sdkVersion,
-                sdkVersionDependency);
+        super(customerId, apiKey, "https://verify.telesign.com", SDK_SOURCE, SDK_VERSION,
+                SDK_VERSION_DEPENDENCY);
     }
 
     public OmniVerifyClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public OmniVerifyClient(String customerId, String apiKey, String restEndpoint, Integer connectTimeout,
                             Integer readTimeout, Integer writeTimeout, Proxy proxy, final String proxyUsername,
                             final String proxyPassword) {
         super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername,
-                proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
+                proxyPassword, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     /**
