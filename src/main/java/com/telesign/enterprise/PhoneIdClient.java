@@ -18,7 +18,6 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
 
     private static final String PHONEID_RESOURCE = "/v1/phoneid";
     private static final String PHONEID_STANDARD_RESOURCE = PHONEID_RESOURCE + "/standard/%s";
-    private static final String PHONEID_SCORE_RESOURCE = PHONEID_RESOURCE + "/score/%s";
     private static final String PHONEID_LIVE_RESOURCE = PHONEID_RESOURCE + "/live/%s";
     private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = PHONEID_RESOURCE + "/number_deactivation/%s";
     private static final String PHONEID_GET_INFO_RESOURCE = PHONEID_RESOURCE + "/%s";
@@ -59,23 +58,6 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     public TelesignResponse standard(String phoneNumber, Map<String, String> params) throws IOException, GeneralSecurityException {
 
         return this.get(String.format(PHONEID_STANDARD_RESOURCE, phoneNumber), params);
-    }
-
-    /**
-     * Score is an API that delivers reputation scoring based on phone number intelligence, traffic patterns, machine
-     * learning, and a global data consortium.
-     * <p>
-     * See https://developer.telesign.com/docs/rest_api-phoneid-score for detailed API documentation.
-     */
-    public TelesignResponse score(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
-
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        params.put("ucid", ucid);
-
-        return this.get(String.format(PHONEID_SCORE_RESOURCE, phoneNumber), params);
     }
 
     /**
