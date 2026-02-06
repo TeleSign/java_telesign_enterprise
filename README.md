@@ -46,13 +46,21 @@ You should then see a message that indicates the build was successful.
 4. Add the following dependency to the `dependencies` block in the file "app/build.gradle.kts" in your project:
 
    ```
-   implementation("com.telesign.enterprise:telesignenterprise:3.+")
-   implementation("com.telesign:telesign:3.+")
+   implementation("com.telesign.enterprise:telesignenterprise:4.+")
+   implementation("com.telesign:telesign:4.+")
    ```
 
 This pulls in the Telesign Full-service Java SDK.
 
 This will also install the Telesign Self-service Java SDK since it is a dependency for the Full-service SDK.
+
+## Development tasks
+
+Use these Gradle tasks during development:
+
+- Run unit tests: `./gradlew test`
+- Run linter checks: `./gradlew lint`
+- Run CI validation (tests + linter): `./gradlew ciTest`
 
 ## Authentication
 

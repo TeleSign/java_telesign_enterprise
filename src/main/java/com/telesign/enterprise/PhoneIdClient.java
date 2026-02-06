@@ -18,22 +18,21 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
 
     private static final String PHONEID_RESOURCE = "/v1/phoneid";
     private static final String PHONEID_STANDARD_RESOURCE = PHONEID_RESOURCE + "/standard/%s";
-    private static final String PHONEID_SCORE_RESOURCE = PHONEID_RESOURCE + "/score/%s";
     private static final String PHONEID_LIVE_RESOURCE = PHONEID_RESOURCE + "/live/%s";
     private static final String PHONEID_NUMBER_DEACTIVATION_RESOURCE = PHONEID_RESOURCE + "/number_deactivation/%s";
     private static final String PHONEID_GET_INFO_RESOURCE = PHONEID_RESOURCE + "/%s";
-    private static final String sdkVersion = PhoneIdClient.class.getPackage().getImplementationVersion();
-    private static final String sdkSource = "java_telesign_enterprise";
-    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_VERSION = PhoneIdClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_SOURCE = "java_telesign_enterprise";
+    private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
 
     public PhoneIdClient(String customerId, String apiKey) {
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public PhoneIdClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public PhoneIdClient(String customerId,
@@ -45,7 +44,7 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
                          Proxy proxy,
                          final String proxyUsername,
                          final String proxyPassword) {
-        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     /**
@@ -59,23 +58,6 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     public TelesignResponse standard(String phoneNumber, Map<String, String> params) throws IOException, GeneralSecurityException {
 
         return this.get(String.format(PHONEID_STANDARD_RESOURCE, phoneNumber), params);
-    }
-
-    /**
-     * Score is an API that delivers reputation scoring based on phone number intelligence, traffic patterns, machine
-     * learning, and a global data consortium.
-     * <p>
-     * See https://developer.telesign.com/docs/rest_api-phoneid-score for detailed API documentation.
-     */
-    public TelesignResponse score(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
-
-        if (params == null) {
-            params = new HashMap<>();
-        }
-
-        params.put("ucid", ucid);
-
-        return this.get(String.format(PHONEID_SCORE_RESOURCE, phoneNumber), params);
     }
 
     /**

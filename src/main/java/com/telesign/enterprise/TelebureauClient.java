@@ -18,18 +18,18 @@ public class TelebureauClient extends RestClient {
     private static final String TELEBUREAU_CREATE_RESOURCE = "/v1/telebureau/event";
     private static final String TELEBUREAU_RETRIEVE_RESOURCE = "/v1/telebureau/event/%s";
     private static final String TELEBUREAU_DELETE_RESOURCE = "/v1/telebureau/event/%s";
-    private static final String sdkVersion = TelebureauClient.class.getPackage().getImplementationVersion();
-    private static final String sdkSource = "java_telesign_enterprise";
-    private static final String sdkVersionDependency = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_VERSION = TelebureauClient.class.getPackage().getImplementationVersion();
+    private static final String SDK_SOURCE = "java_telesign_enterprise";
+    private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
 
     public TelebureauClient(String customerId, String apiKey) {
 
-        super(customerId, apiKey, "https://rest-ww.telesign.com", sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public TelebureauClient(String customerId, String apiKey, String restEndpoint) {
-        super(customerId, apiKey, restEndpoint, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public TelebureauClient(String customerId,
@@ -41,7 +41,7 @@ public class TelebureauClient extends RestClient {
                             Proxy proxy,
                             final String proxyUsername,
                             final String proxyPassword) {
-        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, sdkSource, sdkVersion, sdkVersionDependency);
+        super(customerId, apiKey, restEndpoint, connectTimeout, readTimeout, writeTimeout, proxy, proxyUsername, proxyPassword, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     /**
