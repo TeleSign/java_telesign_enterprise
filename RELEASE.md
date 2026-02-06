@@ -1,3 +1,6 @@
+4.0.1
+- Fix endpoint for making requests in ScoreClient
+
 4.0.0
 - Added support for Intelligence Cloud to use new endpoint
 - Removed Legacy PID Score

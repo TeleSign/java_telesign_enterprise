@@ -7,10 +7,10 @@ public class ScoreClient extends com.telesign.ScoreClient {
     private static final String SDK_VERSION = ScoreClient.class.getPackage().getImplementationVersion();
     private static final String SDK_SOURCE = "java_telesign_enterprise";
     private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
+    private static final String DETECT_REST_ENDPOINT = "https://detect.telesign.com";
 
     public ScoreClient(String customerId, String apiKey) {
-
-        super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
+        super(customerId, apiKey, DETECT_REST_ENDPOINT, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
     public ScoreClient(String customerId, String apiKey, String restEndpoint) {
