@@ -8,6 +8,8 @@ import okhttp3.mockwebserver.RecordedRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class MessagingClientTest extends TestCase {
@@ -16,6 +18,7 @@ public class MessagingClientTest extends TestCase {
 
     private String customerId;
     private String apiKey;
+    private String phoneNumber;
 
     private SimpleDateFormat rfc2616 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'");
 
@@ -25,12 +28,16 @@ public class MessagingClientTest extends TestCase {
 
         this.customerId = System.getenv("CUSTOMER_ID");
         this.apiKey = System.getenv("API_KEY");
+        this.phoneNumber = System.getenv("PHONE_NUMBER");
 
         if (this.customerId == null) {
             this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
         }
         if (this.apiKey == null) {
             this.apiKey = "EXAMPLE----TE8sTgg45yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        }
+        if (this.phoneNumber == null) {
+            this.phoneNumber = "11234567890";
         }
 
         mockServer = new MockWebServer();
@@ -222,6 +229,207 @@ public class MessagingClientTest extends TestCase {
                 request.getHeader("x-ts-auth-method"));
     }
 
+    public void testCheckChannelCapability() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String channel = "rcs";
+        client.checkChannelCapability(channel, phoneNumber);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/capability/" + channel + "/" + this.phoneNumber, request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testCheckCapabilityRBMAgent() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.checkCapabilityRBMAgent(phoneNumber, "my_rbm_id");
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/capability/rcs/" + this.phoneNumber + "/my_rbm_id", request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+
+    public void testGetMsgStatus() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String referenceId = "FakeReferenceId";
+        String verifyCode = "123456";
+
+        client.getMsgStatus(referenceId, verifyCode);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/" + referenceId + "?verify_code=" + verifyCode, request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testGetMsgStatusWithoutVerifyCode() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String referenceId = "FakeReferenceId";
+
+        client.getMsgStatus(referenceId);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/" + referenceId, request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testCreateMsgTemplate() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        Map<String, Object> params = new HashMap<>();
+
+        params.put("type", "standard");
+        params.put("channel", "whatsapp");
+        params.put("name", "wa_bogo");
+
+        // body map
+        Map<String, Object> body = new HashMap<>();
+        body.put("type", "text");
+        body.put("text", "Buy one get one free!");
+
+        // content item
+        Map<String, Object> contentItem = new HashMap<>();
+        contentItem.put("body", body);
+
+        // content list
+        List<Map<String, Object>> content = new ArrayList<>();
+        content.add(contentItem);
+
+        params.put("content", content);
+
+        client.createMsgTemplate(params);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "POST", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/templates", request.getPath());
+        assertEquals("body is not as expected", "{\"channel\":\"whatsapp\",\"name\":\"wa_bogo\",\"type\":\"standard\",\"content\":[{\"body\":{\"text\":\"Buy one get one free!\",\"type\":\"text\"}}]}", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "application/json",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testGetMsgTemplate() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String channel = "whatsapp";
+        String templateName = "wa_bogo";
+
+        client.getMsgTemplate(channel, templateName);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/templates/" + channel + "/" + templateName, request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testGetAllMsgTemplates() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        client.getAllMsgTemplates();
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "GET", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/templates", request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
+
+    public void testDeleteMsgTemplate() throws Exception {
+
+        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+
+        MessagingClient client = new MessagingClient(this.customerId,
+                this.apiKey,
+                this.mockServer.url("").toString().replaceAll("/$", ""));
+
+        String channel = "whatsapp";
+        String templateName = "wa_bogo";
+
+        client.deleteMsgTemplate(channel, templateName);
+
+        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
+
+        assertEquals("method is not as expected", "DELETE", request.getMethod());
+        assertEquals("path is not as expected", "/v1/omnichannel/templates/" + channel + "/" + templateName, request.getPath());
+        assertEquals("body is not as expected", "", request.getBody().readUtf8());
+        assertEquals("Content-Type header is not as expected", "",
+                request.getHeader("Content-Type"));
+        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
+                request.getHeader("x-ts-auth-method"));
+    }
 
 }
 

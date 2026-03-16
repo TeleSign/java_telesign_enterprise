@@ -1,3 +1,6 @@
+4.1.0
+- Add remaining Messaging actions.
+
 4.0.1
 - Fix endpoint for making requests in ScoreClient
 
