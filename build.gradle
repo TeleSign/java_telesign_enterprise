@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.telesign.enterprise'
-version = '4.1.0'
+version = '4.1.1'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -120,7 +120,7 @@ publishing {
 
             groupId = 'com.telesign.enterprise'
             artifactId = 'telesignenterprise'
-            version = '4.1.0'
+            version = '4.1.1'
 
             pom {
                 name = 'TeleSign Enterprise SDK'
