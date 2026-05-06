@@ -1,3 +1,6 @@
+4.2.0
+- Added support for Email Intelligence API.
+
 4.1.1
 - Testing the deployment system.
 
