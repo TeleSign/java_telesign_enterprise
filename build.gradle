@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.telesign.enterprise'
-version = '4.1.1'
+version = '4.2.0'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation('com.telesign:telesign:[4.0.0, 5.0.0)')
+    implementation('com.telesign:telesign:[4.1.0, 5.0.0)')
     implementation 'com.google.code.gson:gson:[2.7,3.0)'
     testImplementation( group: 'junit', name: 'junit', version: '[4.1,)')
     testImplementation( group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '[4.7.0,)')
@@ -120,7 +120,7 @@ publishing {
 
             groupId = 'com.telesign.enterprise'
             artifactId = 'telesignenterprise'
-            version = '4.1.1'
+            version = '4.2.0'
 
             pom {
                 name = 'TeleSign Enterprise SDK'
