@@ -1,3 +1,6 @@
+4.2.1
+- Completed Javadoc documentation.
+
 4.2.0
 - Added support for Email Intelligence API.
 

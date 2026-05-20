@@ -23,15 +23,56 @@ public class TelebureauClient extends RestClient {
     private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
 
+    /**
+     * Constructor for TelebureauClient.
+     * @param customerId
+     *        Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+    */
     public TelebureauClient(String customerId, String apiKey) {
 
         super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+    /**
+     * Constructor for TelebureauClient.
+     * @param customerId
+     *         Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+     * @param restEndpoint
+     *         (optional) Override the default restEndpoint to target another endpoint.
+     */
     public TelebureauClient(String customerId, String apiKey, String restEndpoint) {
         super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+    /**
+	 * Constructs a new TelebureauClient.
+     * 
+	 * @param customerId
+	 *            Your customer_id string associated with your account.
+	 * @param apiKey
+	 *            Your api_key string associated with your account.
+	 * @param restEndpoint
+	 *            (optional) Override the default restEndpoint to target another
+	 *            endpoint.
+	 * @param connectTimeout
+	 *            (optional) connectTimeout passed into OkHttp.
+	 * @param readTimeout
+	 *            (optional) readTimeout passed into OkHttp.
+	 * @param writeTimeout
+	 *            (optional) writeTimeout passed into OkHttp.
+	 * @param proxy
+	 *            (optional) proxy passed into OkHttp.
+	 * @param proxyUsername
+	 *            (optional) proxyUserName used to create an Authenticator passed
+	 *            into OkHttp.
+	 * @param proxyPassword
+	 *            (optional) proxyPassword used to create an Authenticator passed
+	 *            into OkHttp.
+	 */
     public TelebureauClient(String customerId,
                             String apiKey,
                             String restEndpoint,
@@ -48,6 +89,18 @@ public class TelebureauClient extends RestClient {
      * Creates a telebureau event corresponding to supplied data.
      * <p>
      * See https://developer.telesign.com/docs/telebureau-api for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *      The phone number to query.
+     * @param fraudType
+     *      The type of fraud event to report.
+     * @param occurredAt
+     *      The date and time when the event occurred.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse createEvent(String phoneNumber, String fraudType, String occurredAt, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -66,6 +119,14 @@ public class TelebureauClient extends RestClient {
      * Creates a telebureau event corresponding to supplied data.
      * <p>
      * See https://developer.telesign.com/docs/telebureau-api for detailed API documentation.
+     * 
+     * @param referenceId
+     *      The reference ID of the event to retrieve.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse retrieveEvent(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -77,6 +138,14 @@ public class TelebureauClient extends RestClient {
      * create transaction for a telebureau event.
      * <p>
      * See https://developer.telesign.com/docs/telebureau-api for detailed API documentation.
+     * 
+     * @param referenceId
+     *      The reference ID of the event to delete.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse deleteEvent(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
 

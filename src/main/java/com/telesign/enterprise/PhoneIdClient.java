@@ -26,15 +26,57 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
     private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
 
+    /**
+     * Constructor for PhoneIdClient.
+     * @param customerId
+     *          Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+    */
     public PhoneIdClient(String customerId, String apiKey) {
 
         super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+    /**
+     * Constructor for PhoneIdClient.
+     * @param customerId
+     *         Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+     * @param restEndpoint
+     *         (optional) Override the default restEndpoint to target another endpoint.
+    */
     public PhoneIdClient(String customerId, String apiKey, String restEndpoint) {
         super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+     /**
+	 * Telesign Phone ID allows you to get detailed and actionable global phone number and subscriber data
+     *  intelligence to strengthen authentications, evaluate fraud risks, and enhance the user experience.
+	 *
+	 * @param customerId
+	 *            Your customer_id string associated with your account.
+	 * @param apiKey
+	 *            Your api_key string associated with your account.
+	 * @param restEndpoint
+	 *            (optional) Override the default restEndpoint to target another
+	 *            endpoint.
+	 * @param connectTimeout
+	 *            (optional) connectTimeout passed into OkHttp.
+	 * @param readTimeout
+	 *            (optional) readTimeout passed into OkHttp.
+	 * @param writeTimeout
+	 *            (optional) writeTimeout passed into OkHttp.
+	 * @param proxy
+	 *            (optional) proxy passed into OkHttp.
+	 * @param proxyUsername
+	 *            (optional) proxyUserName used to create an Authenticator passed
+	 *            into OkHttp.
+	 * @param proxyPassword
+	 *            (optional) proxyPassword used to create an Authenticator passed
+	 *            into OkHttp.
+	 */
     public PhoneIdClient(String customerId,
                          String apiKey,
                          String restEndpoint,
@@ -54,6 +96,14 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
      * TeleSign PhoneID provides a wide range of risk assessment indicators on the number to help confirm user identity,
      * delivering real-time decision making throughout the number lifecycle and ensuring only legitimate users are
      * creating accounts and accessing your applications.
+     * 
+     * @param phoneNumber
+     *      The phone number to query.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse standard(String phoneNumber, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -65,6 +115,16 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
      * or unreachable and its roaming status.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-phoneid-live for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *      The phone number to query. 
+     * @param ucid
+     *      A string that specifies one of the use case codes.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse live(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -82,6 +142,16 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
      * carriers' phone number data and TeleSign's proprietary analysis.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-phoneid-number-deactivation for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *     The phone number to query.
+     * @param ucid
+     *     A string that specifies one of the use case codes.
+     * @param params
+     *     Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse numberDeactivation(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -98,6 +168,14 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
      * Enter a phone number with country code to receive detailed information about carrier, location, and other details.
      * <p>
      * See https://developer.telesign.com/enterprise/reference/submitphonenumberforidentity for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *      The phone number to query.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
 
     public TelesignResponse getInfo(String phoneNumber, Map<String, Object> params) throws IOException, GeneralSecurityException {
@@ -120,6 +198,14 @@ public class PhoneIdClient extends com.telesign.PhoneIdClient {
      * Enter a phone number with country code to receive detailed information about carrier, location, and other details.
      * <p>
      * See https://developer.telesign.com/enterprise/reference/submitphonenumberforidentityalt for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *     The phone number to query.
+     * @param params
+     *     Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
 
     public TelesignResponse getInfoAlt(String phoneNumber, Map<String, Object> params) throws IOException, GeneralSecurityException {

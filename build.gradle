@@ -6,8 +6,10 @@ plugins {
     id 'checkstyle'
 }
 
+def TELESIGN_ENTERPRISE_VERSION = '4.2.1'
+
 group = 'com.telesign.enterprise'
-version = '4.2.0'
+version = TELESIGN_ENTERPRISE_VERSION
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -120,7 +122,7 @@ publishing {
 
             groupId = 'com.telesign.enterprise'
             artifactId = 'telesignenterprise'
-            version = '4.2.0'
+            version = TELESIGN_ENTERPRISE_VERSION
 
             pom {
                 name = 'TeleSign Enterprise SDK'
