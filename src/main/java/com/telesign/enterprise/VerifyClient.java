@@ -23,15 +23,56 @@ public class VerifyClient extends RestClient {
     private static final String SDK_SOURCE = "java_telesign_enterprise";
     private static final String SDK_VERSION_DEPENDENCY = com.telesign.RestClient.class.getPackage().getImplementationVersion();
 
-
+    /**
+     * Constructor for VerifyClient.
+     * @param customerId
+     *         Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+    */
     public VerifyClient(String customerId, String apiKey) {
         super(customerId, apiKey, "https://rest-ww.telesign.com", SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+    /**
+     * Constructor for VerifyClient.
+     * @param customerId
+     *         Your customer_id string associated with your account.
+     * @param apiKey
+     *        Your api_key string associated with your account.
+     * @param restEndpoint
+     *         (optional) Override the default restEndpoint to target another endpoint.
+     */
     public VerifyClient(String customerId, String apiKey, String restEndpoint) {
         super(customerId, apiKey, restEndpoint, SDK_SOURCE, SDK_VERSION, SDK_VERSION_DEPENDENCY);
     }
 
+    /**
+	 * The Telesign SMS Verify API allows you to easily integrate frictionless phone number verification
+     * on iOS and Android using SMS messages.
+	 *
+	 * @param customerId
+	 *            Your customer_id string associated with your account.
+	 * @param apiKey
+	 *            Your api_key string associated with your account.
+	 * @param restEndpoint
+	 *            (optional) Override the default restEndpoint to target another
+	 *            endpoint.
+	 * @param connectTimeout
+	 *            (optional) connectTimeout passed into OkHttp.
+	 * @param readTimeout
+	 *            (optional) readTimeout passed into OkHttp.
+	 * @param writeTimeout
+	 *            (optional) writeTimeout passed into OkHttp.
+	 * @param proxy
+	 *            (optional) proxy passed into OkHttp.
+	 * @param proxyUsername
+	 *            (optional) proxyUserName used to create an Authenticator passed
+	 *            into OkHttp.
+	 * @param proxyPassword
+	 *            (optional) proxyPassword used to create an Authenticator passed
+	 *            into OkHttp.
+	 */
     public VerifyClient(String customerId,
                         String apiKey,
                         String restEndpoint,
@@ -49,6 +90,14 @@ public class VerifyClient extends RestClient {
      * one-time passcode sent over SMS.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-verify-sms for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *         The end user's phone number.
+     * @param params
+     *         Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse sms(String phoneNumber, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -64,6 +113,14 @@ public class VerifyClient extends RestClient {
      * Use this action to create a verification process for the specified phone number.
      * <p>
      * See https://developer.telesign.com/enterprise/reference/createverificationprocess for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *       The phone number to verify.
+     * @param params
+     *       Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse createVerificationProcess(String phoneNumber, HashMap<String, Object> params) throws IOException, GeneralSecurityException {
 
@@ -76,6 +133,14 @@ public class VerifyClient extends RestClient {
      * passcode sent over verify_voice message.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-verify-call for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *         The end user's phone number.
+     * @param params
+     *         Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse voice(String phoneNumber, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -94,6 +159,16 @@ public class VerifyClient extends RestClient {
      * Verify resource.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-smart-verify for detailed API documentation.
+     * 
+     * @param phoneNumber
+     *      The end user's phone number.
+     * @param ucid
+     *      A string that specifies one of the use case codes.
+     * @param params
+     *      Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse smart(String phoneNumber, String ucid, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -111,6 +186,14 @@ public class VerifyClient extends RestClient {
      * Retrieves the verification result for any verify resource.
      * <p>
      * See https://developer.telesign.com/docs/rest_api-verify-transaction-callback for detailed API documentation.
+     * 
+     * @param referenceId
+     *     The reference_id of the verification process to get the status of.
+     * @param params
+     *     Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse status(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
 
@@ -122,6 +205,14 @@ public class VerifyClient extends RestClient {
      * quality of message delivery routes.
      * <p>
      * See https://developer.telesign.com/docs/completion-service-for-verify-products for detailed API documentation.
+     * 
+     * @param referenceId
+     *     The reference_id of the verification process to notify.
+     * @param params
+     *     Additional parameters for the request.
+     * @return The TelesignResponse for the request.
+     * @throws IOException if the HTTP request fails.
+     * @throws GeneralSecurityException if there is a security exception.
      */
     public TelesignResponse completion(String referenceId, Map<String, String> params) throws IOException, GeneralSecurityException {
         return this.put(String.format(VERIFY_COMPLETION_RESOURCE, referenceId), params);
