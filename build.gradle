@@ -6,7 +6,7 @@ plugins {
     id 'checkstyle'
 }
 
-def TELESIGN_ENTERPRISE_VERSION = '4.2.1'
+def TELESIGN_ENTERPRISE_VERSION = '4.2.2'
 
 group = 'com.telesign.enterprise'
 version = TELESIGN_ENTERPRISE_VERSION

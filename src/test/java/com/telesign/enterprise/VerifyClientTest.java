@@ -1,7 +1,13 @@
 package com.telesign.enterprise;
 
 import junit.framework.TestCase;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class VerifyClientTest extends TestCase {
 
@@ -50,5 +56,33 @@ public class VerifyClientTest extends TestCase {
                 "",
                 "");
         assertNotNull(client);
+    }
+
+    
+
+    
+
+    
+
+    
+
+    public void testInheritedMethodsVerify() throws Exception {
+        VerifyClient client = new VerifyClient(this.customerId, this.apiKey);
+
+        assertTrue(client instanceof VerifyClient);
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("sms", String.class, Map.class).getDeclaringClass());
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("voice", String.class, Map.class).getDeclaringClass());
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("smart", String.class, String.class, Map.class)
+                        .getDeclaringClass());
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("status", String.class, Map.class).getDeclaringClass());
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("completion", String.class, Map.class).getDeclaringClass());
+        assertEquals(VerifyClient.class,
+                client.getClass().getMethod("createVerificationProcess", String.class, HashMap.class)
+                        .getDeclaringClass());
     }
 }

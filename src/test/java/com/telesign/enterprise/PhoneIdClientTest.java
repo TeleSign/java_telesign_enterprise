@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneIdClientTest extends TestCase {
@@ -188,6 +189,19 @@ public class PhoneIdClientTest extends TestCase {
                 request.getBody().readUtf8());
         assertEquals("Content-Type header is not as expected", "application/json",
                 request.getHeader("Content-Type"));
+    }
+
+    public void testInheritedMethodsPhoneId() throws Exception {
+        PhoneIdClient client = new PhoneIdClient(this.customerId, this.apiKey);
+
+        assertTrue(client instanceof com.telesign.PhoneIdClient);
+        assertEquals(PhoneIdClient.class,
+                client.getClass().getMethod("live", String.class, String.class, Map.class)
+                        .getDeclaringClass());
+        assertEquals(PhoneIdClient.class,
+                client.getClass().getMethod("numberDeactivation",
+                        String.class, String.class, Map.class)
+                        .getDeclaringClass());
     }
 }
 

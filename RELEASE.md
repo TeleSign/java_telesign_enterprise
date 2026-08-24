@@ -1,3 +1,6 @@
+4.2.2
+- Adding missing tests.
+
 4.2.1
 - Completed Javadoc documentation.
 
