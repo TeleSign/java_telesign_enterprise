@@ -1,127 +1,36 @@
 package com.telesign.enterprise;
 
 import junit.framework.TestCase;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
-
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class ScoreClientTest extends TestCase {
-
-    private MockWebServer mockServer;
 
     private String customerId;
     private String apiKey;
 
-
     public void setUp() throws Exception {
         super.setUp();
 
-        this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
-        this.apiKey = "ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        this.customerId = System.getenv("CUSTOMER_ID");
+        this.apiKey = System.getenv("API_KEY");
 
-        this.mockServer = new MockWebServer();
-        this.mockServer.start();
+        if (this.customerId == null) {
+            this.customerId = "FFFFFFFF-EEEE-DDDD-1234-AB1234567890";
+        }
+        if (this.apiKey == null) {
+            this.apiKey = "ABC12345yusumoN6BYsBVkh+yRJ5czgsnCehZaOYldPJdmFh6NeX8kunZ2zU1YWaUw/0wV6xfw==";
+        }
     }
 
     public void tearDown() throws Exception {
         super.tearDown();
-
-        this.mockServer.shutdown();
     }
 
-    public void testScore() throws Exception {
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
+    public void testInheritedMethodsScore() throws Exception {
+        ScoreClient client = new ScoreClient(this.customerId, this.apiKey);
 
-        ScoreClient client = new ScoreClient(
-                this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", "")
-        );
-
-        client.score("11234567890", "create", null);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "POST", request.getMethod());
-        assertEquals("path is not as expected", "/intelligence/phone", request.getPath());
-
-        String body = request.getBody().readUtf8();
-        assertTrue("body does not contain phone_number", body.contains("phone_number=11234567890"));
-        assertTrue("body contains account_lifecycle_event", body.contains("account_lifecycle_event=create"));
-
-        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
-    }
-
-    public void testScoreWithParams() throws Exception {
-        HashMap<String, String> params = new HashMap<String, String>() {{
-            put("originating_ip", "127.0.0.1");
-            put("account_lifecycle_event", "create");
-        }};
-
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        ScoreClient client = new ScoreClient(
-                this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", "")
-        );
-
-        client.score("11234567890", "create", params);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "POST", request.getMethod());
-        assertEquals("path is not as expected", "/intelligence/phone", request.getPath());
-
-        String body = request.getBody().readUtf8();
-        assertTrue("body does not contain phone_number", body.contains("phone_number=11234567890"));
-        assertTrue("body does not contain originating_ip", body.contains("originating_ip=127.0.0.1"));
-        assertTrue("body does not contain account_lifecycle_event", body.contains("account_lifecycle_event=create"));
-
-        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
-    }
-
-    public void testScoreWithOriginatingIp() throws Exception {
-
-        HashMap<String, String> params = new HashMap<String, String>() {{
-            put("originating_ip", "127.0.0.1");
-        }};
-        String accountLifecycleEvent = "create";
-
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        ScoreClient client = new ScoreClient(
-                this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", "")
-        );
-
-        client.score("11234567890", accountLifecycleEvent, params);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "POST", request.getMethod());
-        assertEquals("path is not as expected", "/intelligence/phone", request.getPath());
-
-        String body = request.getBody().readUtf8();
-        assertTrue("body does not contain phone_number", body.contains("phone_number=11234567890"));
-        assertTrue("body does not contain originating_ip", body.contains("originating_ip=127.0.0.1"));
-        assertTrue("body does not contain account_lifecycle_event", body.contains("account_lifecycle_event=create"));
-
-        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
+        assertTrue(client instanceof com.telesign.ScoreClient);
+        assertEquals(com.telesign.ScoreClient.class,
+                client.getClass().getMethod("score", String.class, String.class, java.util.Map.class)
+                        .getDeclaringClass());
     }
 }
-
-

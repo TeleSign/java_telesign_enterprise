@@ -69,57 +69,6 @@ public class MessagingClientTest extends TestCase {
         assertNotNull(client);
     }
 
-    public void testMessagingWithParams() throws Exception {
-
-        HashMap<String, String> params = new HashMap<String, String>() {{
-            put("originating_ip", "127.0.0.1");
-            put("account_lifecycle_event", "create");
-        }};
-
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        MessagingClient client = new MessagingClient(this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", ""));
-
-        client.message("18005555555", "Test Message Content", "MKT", params);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "POST", request.getMethod());
-        assertEquals("path is not as expected", "/v1/messaging", request.getPath());
-        assertEquals("body is not as expected",
-                "originating_ip=127.0.0.1&account_lifecycle_event=create&phone_number=18005555555&" +
-                        "message_type=MKT&message=Test+Message+Content",
-                request.getBody().readUtf8());
-        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
-    }
-
-    public void testMessagingNullParams() throws Exception {
-
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        MessagingClient client = new MessagingClient(this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", ""));
-
-        client.message("18005555555", "Test Message Content", "ARN", null);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "POST", request.getMethod());
-        assertEquals("path is not as expected", "/v1/messaging", request.getPath());
-        assertEquals("body is not as expected", "phone_number=18005555555&message_type=ARN&message=Test+Message+Content",
-                request.getBody().readUtf8());
-        assertEquals("Content-Type header is not as expected", "application/x-www-form-urlencoded",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
-    }
-
     public void testOmniMessagingWithOptionalParams() throws Exception {
 
         HashMap<String, Object> params = new HashMap<String, Object>() {{
@@ -203,27 +152,6 @@ public class MessagingClientTest extends TestCase {
         assertEquals("body is not as expected", "{\"channels\":[{\"channel\":\"sms\",\"fallback_time\":300}],\"recipient\":{\"phone_number\":\"18005555555\"},\"message_type\":\"ARN\",\"message\":{\"sms\":{\"template\":\"text\",\"parameters\":{\"text\":\"Test Message Content\"}}}}",
                 request.getBody().readUtf8());
         assertEquals("Content-Type header is not as expected", "application/json",
-                request.getHeader("Content-Type"));
-        assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
-                request.getHeader("x-ts-auth-method"));
-    }
-
-    public void testMessagingStatus() throws Exception {
-
-        this.mockServer.enqueue(new MockResponse().setBody("{}"));
-
-        MessagingClient client = new MessagingClient(this.customerId,
-                this.apiKey,
-                this.mockServer.url("").toString().replaceAll("/$", ""));
-
-        client.status("FakeReferenceId", null);
-
-        RecordedRequest request = this.mockServer.takeRequest(1, TimeUnit.SECONDS);
-
-        assertEquals("method is not as expected", "GET", request.getMethod());
-        assertEquals("path is not as expected", "/v1/messaging/FakeReferenceId", request.getPath());
-        assertEquals("body is not as expected", "", request.getBody().readUtf8());
-        assertEquals("Content-Type header is not as expected", "",
                 request.getHeader("Content-Type"));
         assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
                 request.getHeader("x-ts-auth-method"));
@@ -429,8 +357,20 @@ public class MessagingClientTest extends TestCase {
                 request.getHeader("Content-Type"));
         assertEquals("x-ts-auth-method header is not as expected", "HMAC-SHA256",
                 request.getHeader("x-ts-auth-method"));
-    }
+        }
 
+    public void testInheritedMethodsMessaging() throws Exception {
+        MessagingClient client = new MessagingClient(this.customerId, this.apiKey);
+
+        assertTrue(client instanceof com.telesign.MessagingClient);
+        assertEquals(com.telesign.MessagingClient.class,
+                client.getClass().getMethod("message",
+                        String.class, String.class, String.class, Map.class)
+                        .getDeclaringClass());
+        assertEquals(com.telesign.MessagingClient.class,
+                client.getClass().getMethod("status", String.class, Map.class)
+                        .getDeclaringClass());
+        }
 }
 
 
